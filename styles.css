@@ -1,0 +1,26 @@
+/* No More Shorts - CSS Styles */
+
+/* Hide YouTube Shorts elements */
+[data-shorts-hidden] {
+    display: none !important;
+}
+
+/* Additional backup hiding rules */
+ytd-reel-shelf-renderer,
+ytd-rich-shelf-renderer[is-shorts],
+ytd-reel-video-renderer,
+[aria-label*="Shorts"],
+[title*="Shorts"]:not([title*="YouTube Shorts"]):not([title*="Create Shorts"]),
+a[href*="/shorts/"] {
+    display: none !important;
+}
+
+/* Hide empty containers that might remain */
+ytd-rich-section-renderer:has(> ytd-rich-shelf-renderer[is-shorts]) {
+    display: none !important;
+}
+
+/* Hide shorts from search results */
+div[id*="shorts"] {
+    display: none !important;
+}
