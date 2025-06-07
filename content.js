@@ -4,7 +4,37 @@
 (function() {
     'use strict';
 
+    const blockShortsPage = () => {
+        // If we're on a shorts page, redirect away or block it
+        if (location.pathname.startsWith('/shorts/')) {
+            // Stop any playing videos immediately
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.muted = true;
+                video.currentTime = 0;
+                video.src = '';
+            });
+            
+            // Hide the entire page content
+            document.body.style.display = 'none';
+            
+            // Redirect to homepage after a brief moment
+            setTimeout(() => {
+                window.location.href = 'https://www.youtube.com/';
+            }, 100);
+            
+            return true;
+        }
+        return false;
+    };
+
     const hideShorts = () => {
+        // First check if we're on a shorts page and block it
+        if (blockShortsPage()) {
+            return 0;
+        }
+
         // Selectors for various YouTube Shorts elements
         const shortsSelectors = [
             // Shorts shelf on homepage
@@ -35,6 +65,16 @@
         ];
 
         let hiddenCount = 0;
+
+        // Also mute any videos that might be shorts
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            const container = video.closest('[href*="/shorts/"], ytd-reel-video-renderer, ytd-reel-shelf-renderer');
+            if (container) {
+                video.pause();
+                video.muted = true;
+            }
+        });
 
         shortsSelectors.forEach(selector => {
             try {
